@@ -1,2 +1,2 @@
-# NFT_Exchange_Practice
-Simple NFT Exchange with Node.js, Solidity, and Hardhat
+# NFT_Marketplace_Practice
+Simple NFT Exchange with Node.js, Next.js, Solidity, and Hardhat
