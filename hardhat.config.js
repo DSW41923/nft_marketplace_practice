@@ -8,10 +8,6 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   }
 });
 
-
-const fs = require('fs')
-//const privateKey = fs.readFileSync(".secret").toString().trim() || "01234567890123456789"
-
 module.exports = {
   defaultNetwork: "hardhat",
   networks: {

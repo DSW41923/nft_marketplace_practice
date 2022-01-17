@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { ethers } from 'ethers'
 import { create as ipfsHttpClient } from 'ipfs-http-client'
 import { useRouter } from 'next/router'
-import Web3Modal from 'web3modal'
+import { UserContext } from './context.js'
 
 const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 
@@ -16,6 +16,7 @@ import Market from '../artifacts/contracts/Market.sol/NFTMarket.json'
 export default function CreateItem() {
   const [fileUrl, setFileUrl] = useState(null)
   const [formInput, updateFormInput] = useState({ price: '', name: '', description: '' })
+  const [currentUserId] = useContext(UserContext)
   const router = useRouter()
 
   async function onChange(e) {
@@ -51,10 +52,8 @@ export default function CreateItem() {
   }
 
   async function createSale(url) {
-    const web3Modal = new Web3Modal()
-    const connection = await web3Modal.connect()
-    const provider = new ethers.providers.Web3Provider(connection)    
-    const signer = provider.getSigner()
+    const provider = new ethers.providers.JsonRpcProvider()
+    const signer = await provider.getSigner(parseInt(currentUserId))
 
     /* next, create the item */
     let contract = new ethers.Contract(nftaddress, NFT.abi, signer)
