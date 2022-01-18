@@ -44,7 +44,7 @@ contract NFTMarket is ReentrancyGuard {
 
   struct MarketTransaction {
     uint transactionId;
-    uint itemId;
+    uint256 tokenId;
     address payable seller;
     address payable buyer;
     uint256 price;
@@ -54,7 +54,7 @@ contract NFTMarket is ReentrancyGuard {
 
   event MarketTransactionCreated (
     uint indexed transactionId,
-    uint indexed itemId,
+    uint256 tokenId,
     address seller,
     address buyer,
     uint256 price
@@ -122,20 +122,47 @@ contract NFTMarket is ReentrancyGuard {
 
     idToMarketTransaction[transactionId] =  MarketTransaction(
       transactionId,
-      itemId,
+      tokenId,
+      payable(idToMarketItem[itemId].seller),
       payable(msg.sender),
-      payable(address(0)),
       price
     );
 
     emit MarketTransactionCreated(
       transactionId,
-      itemId,
+      tokenId,
+      idToMarketItem[itemId].seller,
       msg.sender,
-      address(0),
       price
     );
 
+  }
+
+  function deleteMarketSale(
+    address nftContract,
+    uint256 itemId
+    ) public payable nonReentrant {
+    uint tokenId = idToMarketItem[itemId].tokenId;
+    IERC721(nftContract).transferFrom(address(this), msg.sender, tokenId);
+    idToMarketItem[itemId].seller = payable(address(0));
+    idToMarketItem[itemId].owner = payable(msg.sender);
+    idToMarketItem[itemId].sold = true;
+    _itemsSold.increment();
+  }
+
+  function resellMarketItem(
+    address nftContract,
+    uint256 itemId
+    ) public payable nonReentrant {
+    uint tokenId = idToMarketItem[itemId].tokenId;
+    console.log(IERC721(nftContract).ownerOf(tokenId));
+    console.log(msg.sender);
+    IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
+    idToMarketItem[itemId].price = msg.value;
+    idToMarketItem[itemId].seller = payable(msg.sender);
+    idToMarketItem[itemId].owner = payable(address(this));
+    idToMarketItem[itemId].sold = false;
+    _itemsSold.decrement();
   }
 
   /* Returns all unsold market items */
@@ -155,21 +182,32 @@ contract NFTMarket is ReentrancyGuard {
     return items;
   }
 
+  /* Returns all market transactions */
+  function fetchMarketTransactions() public view returns (MarketTransaction[] memory) {
+    uint256 transactionCount = _transactionIds.current();
+
+    MarketTransaction[] memory transactions = new MarketTransaction[](transactionCount);
+    for (uint i = 0; i < transactionCount; i++) {
+      MarketTransaction storage currentTransaction = idToMarketTransaction[i];
+      transactions[i] = currentTransaction;
+    }
+    return transactions;
+  }
+
   /* Returns only items that a user has purchased */
   function fetchMyNFTs() public view returns (MarketItem[] memory) {
     uint totalItemCount = _itemIds.current();
     uint itemCount = 0;
     uint currentIndex = 0;
-    console.log(msg.sender);
     for (uint i = 0; i < totalItemCount; i++) {
-      if (idToMarketItem[i].owner == msg.sender) {
+      if (idToMarketItem[i].owner == msg.sender || idToMarketItem[i].seller == msg.sender) {
         itemCount += 1;
       }
     }
 
     MarketItem[] memory items = new MarketItem[](itemCount);
     for (uint i = 0; i < totalItemCount; i++) {
-      if (idToMarketItem[i].owner == msg.sender) {
+      if (idToMarketItem[i].owner == msg.sender || idToMarketItem[i].seller == msg.sender) {
         uint currentId = i;
         MarketItem storage currentItem = idToMarketItem[currentId];
         items[currentIndex] = currentItem;

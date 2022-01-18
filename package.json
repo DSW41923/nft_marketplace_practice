@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.4.3",
-    "axios": "^0.24.0",
     "identicon.js": "^2.3.3",
     "next": "12.0.8",
     "react": "17.0.2",
@@ -26,7 +25,6 @@
     "ethereum-waffle": "^3.4.0",
     "ethers": "^5.5.3",
     "hardhat": "^2.8.2",
-    "ipfs-http-client": "^55.0.0",
     "postcss": "^8.4.5",
     "tailwindcss": "^3.0.15"
   }

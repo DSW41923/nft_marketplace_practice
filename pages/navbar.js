@@ -31,7 +31,7 @@ export default function Navbar({ Component, pageProps }) {
               My NFTs
             </a>
           </Link>
-          <Link href="/creator-dashboard">
+          <Link href="/transaction-history">
             <a className="mr-6 text-pink-500">
               Transaction History
             </a>
@@ -52,12 +52,12 @@ export default function Navbar({ Component, pageProps }) {
              leaveTo="transform scale-95 opacity-0"
              >
               <Menu.Items as="ul" className="absolute right-0">
-                {test_accounts.map((account) => (
-		  test_accounts.indexOf(account) != currentUserId &&
-                  <Menu.Item key={account} as="li">
+                {test_accounts.map((account, i) => (
+		  i != currentUserId &&
+                  <Menu.Item key={i} as="li">
 		    {({ active }) => (
                       <button id={account} className={`flex py-2 font-medium font-mono ${ active ? 'bg-blue-500 text-white' : 'bg-white text-gray-900'}`}
-                       onClick={() => setCurrentUserId(test_accounts.indexOf(account))} type="button">
+                       onClick={() => setCurrentUserId(i)} type="button">
                         {account}
                         <img className="ml-2 w-30 h-30" alt=""
                          src={`data:image/png;base64,${new Identicon(account, 30).toString()}`}
