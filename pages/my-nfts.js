@@ -28,6 +28,7 @@ export default function MyAssets() {
       let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
       let item = {
         price,
+        itemId: i.itemId.toNumber(),
         tokenId: i.tokenId.toNumber(),
         seller: i.seller,
         owner: i.owner,
@@ -45,7 +46,7 @@ export default function MyAssets() {
     const signer = await provider.getSigner(parseInt(currentUserId))
     const contract = new ethers.Contract(nftmarketaddress, Market.abi, signer)
     const price = ethers.utils.parseUnits(nft.price.toString(), 'ether')  
-    const transaction = await contract.resellMarketItem(nftaddress, nft.tokenId, {
+    const transaction = await contract.resellMarketItem(nftaddress, nft.itemId, {
       value: price
     })
     loadNFTs()
@@ -54,7 +55,7 @@ export default function MyAssets() {
     const provider = new ethers.providers.JsonRpcProvider()
     const signer = await provider.getSigner(parseInt(currentUserId))
     const contract = new ethers.Contract(nftmarketaddress, Market.abi, signer)
-    await contract.deleteMarketSale(nftaddress, nft.tokenId)
+    await contract.deleteMarketSale(nftaddress, nft.itemId)
     loadNFTs()
   }
 

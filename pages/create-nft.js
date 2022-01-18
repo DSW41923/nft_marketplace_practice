@@ -22,10 +22,10 @@ export default function CreateItem() {
 
     /* next, create the item */
     let contract = new ethers.Contract(nftaddress, NFT.abi, signer)
-    let transaction = await contract.createToken("")
+    let transaction = await contract.createToken()
     let tx = await transaction.wait()
-    let event = tx.events[0]
-    let value = event.args[2]
+    let created = tx.events[0]
+    let value = created.args[2]
     let tokenId = value.toNumber()
     const price = ethers.utils.parseUnits(formInput.price, 'ether')
 
@@ -49,7 +49,7 @@ export default function CreateItem() {
           onChange={e => updateFormInput({ ...formInput, price: e.target.value })}
         />
         <button onClick={createSale} className="font-bold mt-4 bg-cyan-600 text-white rounded p-4 shadow-lg">
-          Create Digital Asset
+          Submit
         </button>
       </div>
     </div>

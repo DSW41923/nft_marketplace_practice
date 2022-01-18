@@ -30,6 +30,7 @@ export default function Home() {
       let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
       let item = {
         price,
+        itemId: i.itemId.toNumber(),
         tokenId: i.tokenId.toNumber(),
         seller: i.seller,
         owner: i.owner,
@@ -44,7 +45,7 @@ export default function Home() {
     const signer = await provider.getSigner(parseInt(currentUserId))
     const contract = new ethers.Contract(nftmarketaddress, Market.abi, signer)
     const price = ethers.utils.parseUnits(nft.price.toString(), 'ether')   
-    const transaction = await contract.createMarketSale(nftaddress, nft.tokenId, {
+    const transaction = await contract.createMarketSale(nftaddress, nft.itemId, {
       value: price
     })
     await transaction.wait()
@@ -54,7 +55,10 @@ export default function Home() {
     const provider = new ethers.providers.JsonRpcProvider()
     const signer = await provider.getSigner(parseInt(currentUserId))
     const contract = new ethers.Contract(nftmarketaddress, Market.abi, signer)
-    await contract.deleteMarketSale(nftaddress, nft.tokenId)
+    let listingPrice = await contract.getListingPrice()
+    listingPrice = listingPrice.toString()
+
+    await contract.deleteMarketSale(nftaddress, nft.itemId, { value: listingPrice })
     loadNFTs()
   }
   if (loadingState === 'loaded' && !nfts.length) return (<h1 className="px-20 py-10 text-3xl">No items in marketplace</h1>)
