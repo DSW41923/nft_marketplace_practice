@@ -1,10 +1,7 @@
 import { useState, useContext } from 'react'
 import { ethers } from 'ethers'
-import { create as ipfsHttpClient } from 'ipfs-http-client'
 import { useRouter } from 'next/router'
 import { UserContext } from './context.js'
-
-const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 
 import {
   nftaddress, nftmarketaddress
@@ -51,7 +48,7 @@ export default function CreateItem() {
           className="mt-2 border rounded p-4"
           onChange={e => updateFormInput({ ...formInput, price: e.target.value })}
         />
-        <button onClick={createSale} className="font-bold mt-4 bg-pink-500 text-white rounded p-4 shadow-lg">
+        <button onClick={createSale} className="font-bold mt-4 bg-cyan-600 text-white rounded p-4 shadow-lg">
           Create Digital Asset
         </button>
       </div>

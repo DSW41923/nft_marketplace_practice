@@ -72,9 +72,9 @@ export default function Home() {
                 <div className="p-4 bg-black">
                   <p className="text-2xl mb-4 font-bold text-white">{nft.price} ETH</p>
 		  {nft.seller.toUpperCase() != test_accounts[parseInt(currentUserId)].toUpperCase() ? (
-                     <button className="w-full bg-pink-500 text-white font-bold py-2 px-12 rounded" onClick={() => buyNft(nft)}>Buy</button>
+                     <button className="w-full bg-cyan-600 text-white font-bold py-2 px-12 rounded" onClick={() => buyNft(nft)}>Buy</button>
 		   ) : (
-                     <button className="w-full bg-pink-500 text-white font-bold py-2 px-12 rounded" onClick={() => unsellNft(nft)}>Cancel Selling</button>
+                     <button className="w-full bg-cyan-600 text-white font-bold py-2 px-12 rounded" onClick={() => unsellNft(nft)}>Cancel Selling</button>
 		  )}
                 </div>
               </div>

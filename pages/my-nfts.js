@@ -72,7 +72,7 @@ export default function MyAssets() {
                   <p style={{ height: '64px' }}
                     className="text-2xl font-semibold text-white">NFT Token {s.tokenId}</p>
                   <p className="text-2xl font-bold text-white">Price - {s.price} Eth</p>
-                  <button className="w-full bg-pink-500 text-white font-bold py-2 px-12 rounded" onClick={() => unsellNft(s)}>Cancel Selling</button>
+                  <button className="w-full bg-cyan-600 text-white font-bold py-2 px-12 rounded" onClick={() => unsellNft(s)}>Cancel Selling</button>
                 </div>
               </div>
           ))}
@@ -90,7 +90,6 @@ export default function MyAssets() {
                   <p style={{ height: '64px' }}
                     className="text-2xl font-semibold text-white">NFT Token {nft.tokenId}</p>
                   <p className="text-2xl font-bold text-white">Price - {nft.price} Eth</p>
-                  <button className="w-full bg-pink-500 text-white font-bold py-2 px-12 rounded" onClick={() => sellNft(nft)}>Sell</button>
                 </div>
               </div>
           ))}

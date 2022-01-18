@@ -17,22 +17,22 @@ export default function Navbar({ Component, pageProps }) {
         <p className="text-4xl font-bold">Demo NFT Marketplace</p>
         <div className="flex mt-4">
           <Link href="/">
-            <a className="mr-4 text-blue-500">
+            <a className="mr-4 text-cyan-600">
               Home
             </a>
           </Link>
           <Link href="/create-nft">
-            <a className="mr-6 text-blue-500">
+            <a className="mr-6 text-cyan-600">
               Sell NFT
             </a>
           </Link>
           <Link href="/my-nfts">
-            <a className="mr-6 text-pink-500">
+            <a className="mr-6 text-cyan-600">
               My NFTs
             </a>
           </Link>
           <Link href="/transaction-history">
-            <a className="mr-6 text-pink-500">
+            <a className="mr-6 text-cyan-600">
               Transaction History
             </a>
           </Link>
@@ -56,7 +56,7 @@ export default function Navbar({ Component, pageProps }) {
 		  i != currentUserId &&
                   <Menu.Item key={i} as="li">
 		    {({ active }) => (
-                      <button id={account} className={`flex py-2 font-medium font-mono ${ active ? 'bg-blue-500 text-white' : 'bg-white text-gray-900'}`}
+                      <button id={account} className={`flex py-2 font-medium font-mono ${ active ? 'bg-cyan-600 text-white' : 'bg-white text-gray-900'}`}
                        onClick={() => setCurrentUserId(i)} type="button">
                         {account}
                         <img className="ml-2 w-30 h-30" alt=""
