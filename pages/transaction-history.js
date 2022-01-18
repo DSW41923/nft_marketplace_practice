@@ -12,6 +12,7 @@ export default function TransactionHistory() {
   const [transactions, setTransactions] = useState([])
   const [searchingTokenId, setSearchingTokenId] = useState()
   const [loadingState, setLoadingState] = useState('not-loaded')
+  const [formInput, updateFormInput] = useState({ filterTokenId: '' })
   useEffect(() => {
     loadTransactions()
   }, [])
@@ -43,27 +44,33 @@ export default function TransactionHistory() {
   if (loadingState === 'loaded' && !transactions.length) return (<h1 className="py-10 px-20 text-3xl">No previous transactions!</h1>)
   return (
       <div className="p-4">
-	  <table className="table-auto text-center">
-            <thead className="text-2xl font-bold">
-              <tr>
-                <th>NFT Token Id</th>
-                <th>Seller</th>
-                <th>Buyer</th>
-                <th>Price</th>
-              </tr>
-            </thead>
-            <tbody className="font-mono">
-             {
-               transactions.map((t, i) => (
-                 <tr key={i}>
-                   <td className="px-4">{t.tokenId}</td>
-                   <td className="px-4">{t.seller}</td>
-                   <td className="px-4">{t.buyer}</td>
-                   <td className="px-4">{t.price} Eth</td>
-                 </tr>
-              ))}
-	    </tbody>
-	  </table>
+	<input
+          placeholder="NFT Token ID to filter"
+          className="mt-2 border rounded p-4"
+          onChange={e => updateFormInput({ ...formInput, filterTokenId: e.target.value })}
+        />
+
+	<table className="table-fixed text-center">
+          <thead className="text-2xl font-bold">
+            <tr>
+              <th>NFT Token Id</th>
+              <th width="440px">Seller</th>
+              <th width="440px">Buyer</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody className="font-mono">
+           {
+             transactions.filter(t => !Boolean(formInput.filterTokenId) || (t.tokenId == formInput.filterTokenId)).map((t, i) => (
+               <tr key={i}>
+                 <td className="px-4">{t.tokenId}</td>
+                 <td className="px-4">{t.seller}</td>
+                 <td className="px-4">{t.buyer}</td>
+                 <td className="px-4">{t.price} Eth</td>
+               </tr>
+            ))}
+	  </tbody>
+	</table>
       </div>
   )
 }
