@@ -72,7 +72,6 @@ contract NFTMarket is ReentrancyGuard {
     uint256 price
   ) public payable nonReentrant {
     require(price > 0, "Price must be positive");
- //   require(msg.value == listingPrice, "Price must be equal to listing price");
 
     uint256 itemId = _itemIds.current();
     _itemIds.increment();
@@ -200,38 +199,14 @@ contract NFTMarket is ReentrancyGuard {
     uint itemCount = 0;
     uint currentIndex = 0;
     for (uint i = 0; i < totalItemCount; i++) {
-      if (idToMarketItem[i].owner == msg.sender || idToMarketItem[i].seller == msg.sender) {
+      if (idToMarketItem[i].owner == msg.sender || (idToMarketItem[i].seller == msg.sender) && !idToMarketItem[i].sold) {
         itemCount += 1;
       }
     }
 
     MarketItem[] memory items = new MarketItem[](itemCount);
     for (uint i = 0; i < totalItemCount; i++) {
-      if (idToMarketItem[i].owner == msg.sender || idToMarketItem[i].seller == msg.sender) {
-        uint currentId = i;
-        MarketItem storage currentItem = idToMarketItem[currentId];
-        items[currentIndex] = currentItem;
-        currentIndex += 1;
-      }
-    }
-    return items;
-  }
-
-  /* Returns only items a user has created */
-  function fetchItemsCreated() public view returns (MarketItem[] memory) {
-    uint totalItemCount = _itemIds.current();
-    uint itemCount = 0;
-    uint currentIndex = 0;
-
-    for (uint i = 0; i < totalItemCount; i++) {
-      if (idToMarketItem[i].seller == msg.sender) {
-        itemCount += 1;
-      }
-    }
-
-    MarketItem[] memory items = new MarketItem[](itemCount);
-    for (uint i = 0; i < totalItemCount; i++) {
-      if (idToMarketItem[i].seller == msg.sender) {
+      if (idToMarketItem[i].owner == msg.sender || (idToMarketItem[i].seller == msg.sender) && !idToMarketItem[i].sold) {
         uint currentId = i;
         MarketItem storage currentItem = idToMarketItem[currentId];
         items[currentIndex] = currentItem;
